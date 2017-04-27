@@ -1,0 +1,29 @@
+header {
+    min-height:20%; 
+    min-width:100%;     
+    padding: 1em;    
+    background-color: black;
+    clear: left;
+    text-align: center;
+} 
+
+footer {
+    padding: 1em;    
+    background-color: black;
+    clear: left;
+    text-align: center;
+    position:absolute;
+   bottom:0;
+   width:100%;
+   height:60px;   /* Height of the footer */
+   background:#6cf;
+} 
+
+
+nav {
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+    background-color:  aqua;
+    border-color: blue;
+}
