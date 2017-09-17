@@ -1,29 +1,41 @@
 header {
     min-height:20%; 
-    min-width:100%;     
-    padding: 1em;    
-    background-color: black;
+    width:100%;     
+    background-color:#353744;
     clear: left;
-    text-align: center;
+    text-align: left;
 } 
+.header img {
+  float: left;
+  background: #555;
+}
 
-footer {
-    padding: 1em;    
-    background-color: black;
-    clear: left;
-    text-align: center;
-    position:absolute;
-   bottom:0;
-   width:100%;
-   height:60px;   /* Height of the footer */
-   background:#6cf;
-} 
+.header h1 {
+  position: relative;
+}
 
+main {
+    position:relative  ;
+    left: 165px;
+}
 
 nav {
-    max-width: 160px;
+    position: fixed;
+    top: 21%;
+    width: 160px;
+    min-height: 21%;
+    height: 100%; 
+    background-color: 61D292;
+}
+
+button {
+    display: inline-block;
+    padding: 0;
     margin: 0;
-    padding: 1em;
-    background-color:  aqua;
-    border-color: blue;
+    vertical-align: top;
+}
+
+#submit img {
+    display: block;
+    border: transparent;
 }

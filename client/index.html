@@ -1,133 +1,42 @@
 <html>
 <head>
-<script src='http://code.jquery.com/jquery-1.6.4.min.js'></script>
-<script>
-// client code here
-// Client code
-var counter = 0;
-var poll = function() {
-$.getJSON('/poll/'+counter, function(response) {
-counter = response.count;
-var elem = $('#output');
-elem.text(elem.text() + response.append);
-poll();
-});
-}
-poll();
-</script>
-</head>
-<body>
-    
-<textarea id="output" style="width: 50%; height: 50%;">
-</textarea>
-
- <form action="http://localhost:8080" method="POST">
-        <label for="id-name">Name</label>
-        <input id="id-name" type="text" name="firstName">
-        <label for="id-message">Message</label>
-        <input id="id-message" type="text" name="message">
-        <button>Submit</button>
-    </form>
-
-</body>
-</html>
-
-<!--
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>hello1</h1>
-
-<form method="GET"
-action="http://eloquentjavascript.net/example/message.html">
-<p>Name: <input type="text" name="name"></p>
-<p>Message: <textarea name="message"></textarea></p>
-<p><input type="submit">Send</input></p>
-</form>
-
-<form method="POST"
-action="http://eloquentjavascript.net/example/message.html">
-<p>Name: <input type="text" name="name"></p>
-<p>Message: <textarea name="message"></textarea></p>
-<p><input type="submit">Send</input></p>
-</form>
-
-    <form action="http://localhost:9097" method="POST">
-        <label for="id-name">Name</label>
-        <input id="id-name" type="text" name="firstName">
-        <label for="id-message">Message</label>
-        <input id="id-message" type="text" name="message">
-        <button>Submit</button>
-    </form>
-    <script src="test\main.js"></script>
-</body>
-</html>	
--->
-
-
-<!--
-<html>
-<head>
-  <script src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;></script>
-  <script>
-  // client code here
-  </script>
-</head>
-<body>
- <textarea id=&quot;output&quot; style=&quot;width: 100%; height: 100%;&quot;>
- </textarea>
-</body>
-</html>
--->
-
-<!-- 
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">        
-    <link rel="stylesheet" type="text/css" href="styles/main.css" media="screen" />
     <title>Vegans - Babble</title>
-    
+    <link rel="stylesheet" href="../client/styles/main.css">
+<script src='http://code.jquery.com/jquery-1.6.4.min.js'></script>
+<script>
+    var counter = 0;
+    var poll = function() {
+        $.getJSON('/poll/'+counter, function(response) {
+            counter = response.count;
+            var elem = $('#output');
+            elem.text(elem.text() + response.append);
+            poll();
+    });
+    }
+    poll();
+</script>
 </head>
-<style>
-
-footer {
-    padding: 1em;    
-    background-color: black;
-    clear: left;
-    text-align: center;
-} 
-nav {
-    float: left;
-    max-width: 160px;
-    margin: 0;
-    padding: 1em;
-    background-color:  aqua;
-    border-color: blue;
-}
-</style>       
-
 <body>
+
 <header>
-   <h1></h1>
-</header>
-<footer>
+    <img src="../client/images/logo.jpg" alt="logo" />
     <h1></h1>
-</footer>
+</header>    
+<main>
+    <textarea id="output" style="width: 50%; height: 50%;">
+    </textarea>
+    <form action="http://localhost:8080" method="POST">
+            <label for="id-name">Name</label>
+            <input id="id-name" type="text" name="firstName">
+            <label for="id-message">Message</label>
+            <input id="id-message" type="text" name="message">
+           <!-- <button id="submit"><img src="../client/images/button.jpg"></button> -->
+            <button>Submit</button>
+    </form>
+</main>
+<nav></nav>
 </body>
 </html>
-
--->

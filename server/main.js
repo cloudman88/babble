@@ -15,7 +15,6 @@ http.createServer(function (req, res) {
 if (req.method === 'POST') {
         var requestBody = '';
         req.on('data', function(chunk) {
-                        console.log('chucnk ', chunk);
             requestBody += chunk.toString();
         });
         req.on('end', function() {
@@ -28,9 +27,7 @@ if (req.method === 'POST') {
     count: messages.length,
     append: requestBody+"\n"}));
 }  
-        })
-        
-
+        })        
     }
    
    if(url_parts.pathname == '/') {
