@@ -3,9 +3,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vegans - Babble</title>
-    <link rel="stylesheet" href="../client/styles/main.css">
-<script src='http://code.jquery.com/jquery-1.6.4.min.js'></script>
+    <title>Vegans - Babble</title>    
+    <link rel="stylesheet" href="styles/main.css" type="text/css">
+    <script src='http://code.jquery.com/jquery-1.6.4.min.js'></script>
+</head>
+<body>
 <script>
     var counter = 0;
     var poll = function() {
@@ -18,23 +20,21 @@
     }
     poll();
 </script>
-</head>
-<body>
-
 <header>
-    <img src="../client/images/logo.jpg" alt="logo" />
+    <img src="./images/logo.jpg" alt="logo" />
     <h1></h1>
-</header>    
+</header>
 <main>
-    <textarea id="output" style="width: 50%; height: 50%;">
-    </textarea>
+    <textarea id="output">    </textarea>
     <form action="http://localhost:8080" method="POST">
-            <label for="id-name">Name</label>
-            <input id="id-name" type="text" name="firstName">
-            <label for="id-message">Message</label>
-            <input id="id-message" type="text" name="message">
-           <!-- <button id="submit"><img src="../client/images/button.jpg"></button> -->
-            <button>Submit</button>
+    <textarea id="msg-box">Enter message text here...</textarea>
+           <button id="submit"><img src="./images/button.jpg"></button>
+             <!--           
+           <input id="msg-box" type="text" name="msg-box">
+                  <label for="id-message">Message</label>
+                <input id="id-message" type="text" name="message">
+                <button>Submit</button>
+            -->
     </form>
 </main>
 <nav></nav>

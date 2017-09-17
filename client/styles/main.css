@@ -1,22 +1,71 @@
 header {
     min-height:20%; 
-    width:100%;     
+    width:100%;
     background-color:#353744;
     clear: left;
     text-align: left;
 } 
 .header img {
-  float: left;
-  background: #555;
+    float: left;
 }
 
 .header h1 {
-  position: relative;
+    position: relative;
 }
 
+
+
+
 main {
-    position:relative  ;
+    position: relative;
     left: 165px;
+    width: 85%;
+}
+
+#output{
+        width: 100%;
+        height: 85px;
+        background-color:purple;
+       -ms-grid-row: 250;
+        columns: 150;
+}
+
+form{
+    position: fixed;
+    bottom: 0;
+    width: 75%;
+    background-color: red;
+}
+
+#msg-box{
+        width: 100%;
+        height: 85px;
+        background-color:blue;
+       -ms-grid-row: 4;
+        columns: 150;
+}
+
+/*
+input{
+    width: 100%;
+    height: 100px;
+    background-color:blue;
+    padding-left:0;
+    padding-top:0;
+    padding-bottom:0.4em;
+    padding-right: 0.4em;
+}*/
+
+button {
+    position: fixed;
+    border-style: none;
+    bottom: 5%;
+    right: 5%;
+    background-color: transparent;
+}
+
+#submit img {
+    border: transparent;
 }
 
 nav {
@@ -25,17 +74,5 @@ nav {
     width: 160px;
     min-height: 21%;
     height: 100%; 
-    background-color: 61D292;
-}
-
-button {
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-    vertical-align: top;
-}
-
-#submit img {
-    display: block;
-    border: transparent;
+    background-color: #61D292;
 }
