@@ -1,7 +1,8 @@
 
 var http = require('http'),
 url = require('url'),
-queryUtil = require('querystring');
+queryUtil = require('querystring'),
+port = 9000;
 
 fs = require('fs'),
 clients = [],
@@ -66,5 +67,5 @@ if (req.method === 'POST') {
    else {
        res.end("else end");
    }
-}).listen(8080, 'localhost');
-console.log('Server running.');
+}).listen(port, 'localhost');
+console.log('Server running on port: '+ port);
