@@ -4,61 +4,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vegans - Babble</title>
-  <!--  <script src="scripts/main.js"></script> -->
+    <script src="scripts/main.js"></script>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
-    <script>
-        var counter = 0;
-         var poll = function() {
-        $.getJSON('/poll/'+counter, function(response) {
-            counter = response.count;
-            var elem = $('#messages');
-            elem.text(elem.text() + response.append);
-            poll();
-    });
-}
-    poll();
-
-
-    </script>
 </head>
 <body>
-
 <header>
     <img src="images/logo.jpg" alt="logo" />
     <h1></h1>
 </header>
 <main>
-    <!-- 
-$('#submitBtn').click(function(){
-    var text = $('#msgbox').val();
-    if(text.length){
-        $('<li />', {html: text}).appendTo('ol.msglist')
-    }
-});
-
-    -->
-    <!-- <textarea id="output" name ="outmsg">    </textarea> -->
 <ol class="msglist" id="messages">
 </ol>
-    <form id="msgform" action="http://localhost:9000" method="POST">
-        <button type="submit" id="submitBtn"><img src="./images/button.jpg"></button>             
-             <!--           
-        <input id="id-message" type="text" name="message">
-           <input id="msg-box" type="text" name="msg-box">
-                  <label for="id-message">Message</label>
-                <button>Submit</button>
-            -->
+    <form id="msgform" action="http://localhost:9000/messages/" method="POST">
+        <button type="submit" class="submitBtnImg"><img src="./images/button.jpg"></button>
     </form>
-    <textarea id="msgbox" name="inputmsg" form="msgform"></textarea>
+    <textarea class="msgbox" name="inputmsg" form="msgform"></textarea>
 </main>
 <nav></nav>
 </body>
-<location path="~/styles">
-    <system.web>
-        <authorization>
-            <allow users="*" />
-        </authorization>
-    </system.web>
-</location>
-
 </html>

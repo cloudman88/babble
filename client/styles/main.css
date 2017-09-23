@@ -13,21 +13,18 @@ header {
     position: relative;
 }
 
-
-
-
 main {
     position: relative;
     left: 165px;
     width: 85%;
 }
 
-#output{
-        width: 100%;
-        height: 85px;
-        background-color:purple;
+ol {
+        width: 95%;
+        height: 185px;
+        background-color:lightgray;
        -ms-grid-row: 250;
-        columns: 150;
+        columns: 130;
 }
 
 form{
@@ -37,12 +34,14 @@ form{
     background-color: red;
 }
 
-#msg-box{
-        width: 100%;
+.msgbox{
+        width: 75%;
         height: 85px;
-        background-color:blue;
+        background-color:lightblue;
        -ms-grid-row: 4;
-        columns: 150;
+        columns: 130;
+        position: fixed;
+        bottom: 0;
 }
 
 /*
@@ -59,12 +58,12 @@ input{
 button {
     position: fixed;
     border-style: none;
-    bottom: 5%;
-    right: 5%;
+    bottom: 3%;
+    right: 3%;
     background-color: transparent;
 }
 
-#submit img {
+.submitBtnImg {
     border: transparent;
 }
 
