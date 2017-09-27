@@ -33,9 +33,17 @@ var poll = function() {
 }
 
 //Babble.register(userInfo:Object)
-//Babble.getMessages(counter:Number, callback:Function)
+function postMessage(message, callback){
+
+}
+//Babble.getMessages(counter, callback)
 //Babble.postMessage(message:Object, callback:Function)
 //Babble.deleteMessage(id:String, callback:Function)
 //Babble.getStats(callback:Function)
 
 poll();
+
+document.getElementById("sbtMsgBtn").addEventListener("click", function() {
+    //Babble.postMessage(message:Object, callback:Function)
+
+});
