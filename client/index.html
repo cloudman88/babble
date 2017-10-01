@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vegans - Babble</title>
-    <script src="scripts/main.js"></script>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
 </head>
 <body>
@@ -15,11 +14,15 @@
 <main>
 <ol class="msglist" id="messages">
 </ol>
-    <form id="msgform" action="http://localhost:9000/messages/" method="POST">
-        <button type="submit" class="submitBtnImg"><img src="./images/button.jpg"></button>
+    <form id="msgform">
+        <button type="submit" id="sbtMsgBtn" class="submitBtnImg"><img src="./images/button.jpg"></button>
     </form>
-    <textarea class="msgbox" name="inputmsg" form="msgform"></textarea>
+    <textarea class="msgbox" id="msgBox" name="inputmsg" form="msgform"></textarea>
+    <!--
+    action="http://localhost:9000/messages/" method="POST"
+    !-->
 </main>
 <nav></nav>
+    <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -17,25 +17,39 @@ http.createServer(function (req, res) {
     // parse URL
     var url_parts = url.parse(req.url);
     console.log(url_parts);
-    console.log('inside req ');
+    console.log('inside req: ',req.method);
 
     if (req.method === 'POST') {
         console.log('inside POST');
         if(url_parts.pathname.substr(0, 9) == '/messages') { //new message
             console.log('inside /messages ');
             // message receiving
-            console.log('url_parts.pathname: ',url_parts.pathname);
-            var msg = unescape(url_parts.pathname.substr(10));
-            console.log('POST msg: ',msg);
-            messages.push(msg);
-            console.log('client.lenght: ',clients.length);
-            while(clients.length > 0) {
-                var client = clients.pop();
-                client.end(JSON.stringify( {
-                count: messages.length,
-                append: msg+"\n"}));
-            }
-            res.end("msg end");
+            // console.log('url_parts.pathname: ',url_parts.pathname);
+            var reqDetails;
+            req.on('data', function(data){
+                console.log('req data: ',data.toString());
+                reqDetails = JSON.parse(data);
+            });
+            req.on('end', function(){
+                console.log("req end");
+                var msg = { name : reqDetails.name, email : reqDetails.email , message:reqDetails.message};
+                messages.push(msg);
+                console.log("msg: ",JSON.stringify(msg));
+                console.log("messages: ",JSON.stringify(messages));
+                // add message
+                console.log('client.lenght: ',clients.length);
+                while(clients.length > 0) {
+                    var client = clients.pop();
+                    client.end(JSON.stringify( {
+                    count: messages.length,
+                    append: msg.message}));
+                }
+                res.end(JSON.stringify({
+                        msg: msg.message
+                    }));
+            });
+
+
         }
     }   
     else if(req.method == 'GET'){
