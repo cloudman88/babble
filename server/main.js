@@ -31,22 +31,19 @@ http.createServer(function (req, res) {
                 reqDetails = JSON.parse(data);
             });
             req.on('end', function(){
-                console.log("req end");
-                var msg = { name : reqDetails.name, email : reqDetails.email , message:reqDetails.message};
-                messages.push(msg);
-                console.log("msg: ",JSON.stringify(msg));
-                console.log("messages: ",JSON.stringify(messages));
+               // console.log("req end");
+                var msg = { name : reqDetails.name, email : reqDetails.email , message : reqDetails.message};
                 // add message
-                console.log('client.lenght: ',clients.length);
+                messages.push(msg);
+                //console.log("msg: ",JSON.stringify(msg));
+               // console.log("messages: ",JSON.stringify(messages));
                 while(clients.length > 0) {
                     var client = clients.pop();
                     client.end(JSON.stringify( {
                     count: messages.length,
-                    append: msg.message}));
+                    append: msg }));
                 }
-                res.end(JSON.stringify({
-                        msg: msg.message
-                    }));
+                res.end(JSON.stringify({id:42}));
             });
 
 
@@ -68,12 +65,12 @@ http.createServer(function (req, res) {
                 console.log('the messages: ',messages);
                 if(messages.length > count) {
                     console.log('inside messages.length > count');
-                    res.end(JSON.stringify({count: messages.length,append: messages.slice(count).join("\n")+"\n"}));
+                    console.log('test3: ',JSON.stringify({count: messages.length,append: messages.slice(count).join("\n")+"\n"}));
+                    res.end(JSON.stringify({count: messages.length,append: messages.slice(count)}));
                 } 
                 else {
                     console.log('client push ');
                     clients.push(res);
-                    res.end('{}');
                 }
         }else if(url_parts.pathname.substr(0, 6) == '/stats') { //get statistics
                 // todo
