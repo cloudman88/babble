@@ -15,8 +15,10 @@
   },
   "scripts": {
     "test": "mocha --recursive test/server || true",
+    "startd": "npm-run-all -p -r file-server api-server-dev",
+    "api-server-dev" : "nodemon server/main.js",
     "start": "npm-run-all -p -r file-server api-server",
-    "api-server": "node server/main.js",
+    "api-server": "nodemon server/main.js",
     "file-server": "http-server ./client -p 8080"
   },
   "repository": {

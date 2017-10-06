@@ -1,11 +1,10 @@
-
 var http = require('http'),
 url = require('url'),
 queryUtil = require('querystring'),
 port = 9000;
 
 fs = require('fs'),
-clients = [],
+clients = [], //responses
 messages = [];
 
 http.createServer(function (req, res) {
@@ -27,21 +26,23 @@ http.createServer(function (req, res) {
             // console.log('url_parts.pathname: ',url_parts.pathname);
             var reqDetails;
             req.on('data', function(data){
-                console.log('req data: ',data.toString());
+              //  console.log('req data: ',data.toString());
                 reqDetails = JSON.parse(data);
             });
             req.on('end', function(){
                // console.log("req end");
                 var msg = { name : reqDetails.name, email : reqDetails.email , message : reqDetails.message};
                 // add message
-                messages.push(msg);
-                //console.log("msg: ",JSON.stringify(msg));
-               // console.log("messages: ",JSON.stringify(messages));
+                messages.push(JSON.stringify(msg));
+                console.log("msg : ",msg);
+                console.log("msg stringify: ",JSON.stringify(msg));
+                console.log("messages: ",messages);
+               // console.log("messages parse: ",JSON.parse(messages));
                 while(clients.length > 0) {
                     var client = clients.pop();
                     client.end(JSON.stringify( {
                     count: messages.length,
-                    append: msg }));
+                    append: [JSON.stringify(msg)] }));
                 }
                 res.end(JSON.stringify({id:42}));
             });
@@ -58,15 +59,24 @@ http.createServer(function (req, res) {
             });
         } 
         else if(url_parts.pathname.substr(0, 5) == '/poll') { //change to /messages?counter=XX 
-                console.log('inside /poll');
                 // polling code here
                 var count = url_parts.pathname.replace(/[^0-9]*/, '');
-                console.log('count in /poll:',count);
-                console.log('the messages: ',messages);
+                console.log('inside poll, count: ',count,'messages.length: ', messages.length);
                 if(messages.length > count) {
                     console.log('inside messages.length > count');
-                    console.log('test3: ',JSON.stringify({count: messages.length,append: messages.slice(count).join("\n")+"\n"}));
-                    res.end(JSON.stringify({count: messages.length,append: messages.slice(count)}));
+                //    console.log('test3: ',JSON.stringify({count: messages.length,append: messages.slice(count-1).join("\n")+"\n"}));
+                //    console.log('test4: ',JSON.stringify({count: messages.length,append: messages.slice(count).join("\n")+"\n"}));
+                //    console.log('test4444: ',JSON.parse(messages.slice(count).join("\n")+"\n"));                   
+                   
+                    var x = messages.slice(count); 
+                    console.log('x: ',x);  
+                    var appendMsg = x.map(JSON.parse);
+                    console.log('appendMsg: ',appendMsg);       
+                    //console.log('test5: ',messages[count].message);                
+                //    console.log('test6: ',messages[count]);                
+                    res.end(JSON.stringify({
+                        count: messages.length,
+                        append: messages.slice(count)}));
                 } 
                 else {
                     console.log('client push ');

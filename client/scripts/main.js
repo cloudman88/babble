@@ -8,17 +8,24 @@ console.log('inside client script');
 //var modalElement = document.getElementById('id01');
 //modalElement.style.display = "block";
 
-var element = document.getElementById("sbtMsgBtn");
+var element = document.getElementById("msgform");
+//var element = document.querySelector(".msg-form");
+
 if(element){
-    element.addEventListener("click", function() {
+    console.log('inside element');
+    element.addEventListener('submit', function(event) {
+        event.preventDefault();
         //Babble.postMessage(message:Object, callback:Function)
         console.log('inside click event listener');
         var eventDetails = JSON.parse(localStorage.getItem('babble'));
         postMessage({name : eventDetails.userInfo.name,
                     email : eventDetails.userInfo.email,
                     message : document.getElementById('msgBox').value
-        })
-    });
+        });
+        return false;
+      //  event.returnValue = false;
+     //   event.cancelBubble = true;
+    },false);
 }
 else {
         console.log('else click event listener');
@@ -38,19 +45,22 @@ var poll = function() {
             // Success!
             console.log('inside success');
             var data = JSON.parse(this.responseText);
-            console.log('test: ',JSON.stringify(data));
+            console.log('test: ',data);
 
             counter = data.count;
             console.log('counter: ',counter);
 
             var msgListElement = document.querySelector('.msglist');
-            var li = document.createElement('li');
-            //var p = document.createElement('p');
-            console.log('test0: ',data.append[counter-1].message);
-            li.appendChild(document.createTextNode(data.append[counter-1].message));            
-            //li.appendChild(p);
-            msgListElement.appendChild(li);
-            // poll();
+            var msgCount = msgListElement.children.length;
+            for (i = msgCount; i < counter; i++) {
+                var li = document.createElement('li');
+                var append = JSON.parse(data.append[i-msgCount]);
+                console.log('test00: ',append.message);                
+                li.appendChild(document.createTextNode(append.message));
+                 
+                msgListElement.appendChild(li);
+            }
+            poll();
         } else {
             console.log('inside failure');
             // We reached our target server, but it returned an error
@@ -78,9 +88,6 @@ function postMessage(message, callback){
 //    var resultInJson = JSON.stringify(result);
    // return resultInJson;
 }
-
-
-
 
 poll();
 
