@@ -9,32 +9,24 @@
 <body>
 
 <!--
-<div id="id01" class="modal">
-  
+
+-->
+<div id="myModal" class="modal">  
   <form class="modal-content animate" action="/action_page.php">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <img src="img_avatar2.png" alt="Avatar" class="avatar">
-    </div>
-
     <div class="container">
+      <h1>Who Are You ?</h1>
+
       <label><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
+      <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
-      <label><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+      <label><b>Email</b></label>
+      <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required>
         
-      <button type="submit" class="loginBtn">Login</button>
-      <input type="checkbox" checked="checked"> Remember me
-    </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
+      <button type="button" onclick="login()" class="loginBtn" id="loginBtn">Save</button>
+      <button type="button" onclick="login()" class="anonymousByn">Stay Anonymous</button>
+    </div>  
   </form>
 </div>
--->
 <header>
     <img src="images/logo.jpg" alt="logo" />
     <h1></h1>
@@ -43,7 +35,9 @@
 <ol class="msglist"> 
 </ol>
     <form id="msgform" class="msg-form">
-        <button type="submit" id="sbtMsgBtn" class="submitBtnImg"><img src="./images/button.jpg"></button>
+        <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
+            <img src="./images/button.jpg">
+        </button>
     </form>
     <textarea class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
 </main>

@@ -1,16 +1,65 @@
-var counter = 0;
-var userInfo = { name :'',email:''};
-localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
-                                                 userInfo: {  name: '',
-                                                             email: '' } }));
 console.log('inside client script');
 
-//var modalElement = document.getElementById('id01');
-//modalElement.style.display = "block";
+var counter = 0;
+window.Babble = {
+    //Babble.postMessage(message:Object, callback:Function)
+    postMessage : function postMessage(message, callback){
+        console.log('inside postMessage');
+        var request = new XMLHttpRequest();
+        request.open('POST','http://localhost:9000/messages',true);
+        //    var result;
+        //    request.onload = function () {
+        //            if (request.status >= 200 && request.status < 400) {
+        //            }
+        //        }
+        request.send(JSON.stringify(message));
+    },
+
+    //Babble.register(userInfo:Object)
+    register : function register(userInfo){        
+        if (userInfo.email !=""){
+            localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
+                                                            userInfo: { name: userInfo.name,
+                                                                        email: userInfo.email }}));        
+        }
+        else {
+            localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
+                                                            userInfo: { name: "Anonymmous",
+                                                                        email: '' }}));        
+        }
+    }
+};
+
+window.addEventListener('load',function(){
+    var modalElement = document.getElementById('myModal');
+    modalElement.style.display = "block";
+},false);
+
+
+function login(){
+    var modalElement = document.getElementById('myModal');
+    modalElement.style.display = "none";
+    Babble.register({
+        name : document.getElementById("uname").value,
+        email : document.getElementById("uemail").value
+    });
+}
+
+/*
+document.getElementById("loginBtn").addEventListener('submit' , function(event){
+    event.preventDefault();
+    var modalElement = document.getElementById('myModal');
+    modalElement.style.display = "none";
+    Babble.register({
+        name : document.getElementById("uname").innerText,
+        email : document.getElementById("uemail").innerText
+    });
+})
+*/
+
 
 var element = document.getElementById("msgform");
 //var element = document.querySelector(".msg-form");
-
 if(element){
     console.log('inside element');
     element.addEventListener('submit', function(event) {
@@ -18,19 +67,19 @@ if(element){
         //Babble.postMessage(message:Object, callback:Function)
         console.log('inside click event listener');
         var eventDetails = JSON.parse(localStorage.getItem('babble'));
-        postMessage({name : eventDetails.userInfo.name,
+        Babble.postMessage({name : eventDetails.userInfo.name,
                     email : eventDetails.userInfo.email,
                     message : document.getElementById('msgBox').value
         });
-        return false;
-      //  event.returnValue = false;
-     //   event.cancelBubble = true;
+        document.getElementById("msgBox").value="";
     },false);
 }
 else {
         console.log('else click event listener');
 }
 
+
+//Babble.getMessages(counter, callback)
 var poll = function() {
     console.log('inside poll');
     var request = new XMLHttpRequest();
@@ -49,7 +98,7 @@ var poll = function() {
 
             counter = data.count;
             console.log('counter: ',counter);
-
+ 
             var msgListElement = document.querySelector('.msglist');
             var msgCount = msgListElement.children.length;
             for (i = msgCount; i < counter; i++) {
@@ -74,26 +123,7 @@ var poll = function() {
     request.send();      
 }
 
-function postMessage(message, callback){
-    console.log('inside postMessage');
-    var request = new XMLHttpRequest();
-    request.open('POST','http://localhost:9000/messages',true);
-//    var result;
-//    request.onload = function () {
-//            if (request.status >= 200 && request.status < 400) {
-//                result = JSON.parse(request.responseText);
-//            }
-//        }
-    request.send(JSON.stringify(message));
-//    var resultInJson = JSON.stringify(result);
-   // return resultInJson;
-}
-
 poll();
 
-//Babble.register(userInfo:Object)
-
-//Babble.getMessages(counter, callback)
-//Babble.postMessage(message:Object, callback:Function)
 //Babble.deleteMessage(id:String, callback:Function)
 //Babble.getStats(callback:Function)
