@@ -1,6 +1,5 @@
 console.log('inside client script');
 
-var counter = 0;
 window.Babble = {
     //Babble.postMessage(message:Object, callback:Function)
     postMessage : function postMessage(message, callback){
@@ -10,6 +9,7 @@ window.Babble = {
         //    var result;
         //    request.onload = function () {
         //            if (request.status >= 200 && request.status < 400) {
+            
         //            }
         //        }
         request.send(JSON.stringify(message));
@@ -27,6 +27,43 @@ window.Babble = {
                                                             userInfo: { name: "Anonymmous",
                                                                         email: '' }}));        
         }
+    },
+
+    //Babble.getMessages(counter, callback)
+    getMessages : function getMessages(counter,callback){
+        var request = new XMLHttpRequest();
+        request.addEventListener("load", function (event) {
+                console.log('added load event listener');
+        });
+        request.open('GET', 'http://localhost:9000/poll/'+counter, true);
+
+        request.onload = function() {
+            console.log('inside onload');
+            if (request.status >= 200 && request.status < 400) {
+                // Success!
+                console.log('inside success');
+                var data = JSON.parse(this.responseText);
+                console.log('test: ',data);
+                console.log('counter: ',counter);       
+                var msgListElement = document.querySelector('.msglist');            
+                for (i = counter; i < data.count; i++) {
+                    var li = document.createElement('li');
+                    var append = JSON.parse(data.append[i-counter]);
+                    console.log('test00: ',append.message);                
+                    li.appendChild(document.createTextNode(append.message));                    
+                    msgListElement.appendChild(li);
+                } 
+               // poll(); 
+            } else {
+                console.log('inside failure');
+                // We reached our target server, but it returned an error
+            }
+        };
+            request.onerror = function() {
+            console.log('inside connection error');
+            // There was a connection error of some sort    
+        };
+        request.send();
     }
 };
 
@@ -45,7 +82,6 @@ function login(){
     });
 }
 
-
 document.getElementById("msgform").addEventListener('submit', function(event) {
     event.preventDefault();
     console.log('inside click event listener');
@@ -57,48 +93,11 @@ document.getElementById("msgform").addEventListener('submit', function(event) {
     document.getElementById("msgBox").value="";
 },false);
 
-//Babble.getMessages(counter, callback)
-var poll = function() {
-    console.log('inside poll');
-    var request = new XMLHttpRequest();
-    request.addEventListener("load", function (event) {
-            console.log('added load event listener');
-    });
-    request.open('GET', 'http://localhost:9000/poll/'+counter, true);
-
-    request.onload = function() {
-        console.log('inside onload');
-        if (request.status >= 200 && request.status < 400) {
-            // Success!
-            console.log('inside success');
-            var data = JSON.parse(this.responseText);
-            console.log('test: ',data);
-
-            counter = data.count;
-            console.log('counter: ',counter);
- 
-            var msgListElement = document.querySelector('.msglist');
-            var msgCount = msgListElement.children.length;
-            for (i = msgCount; i < counter; i++) {
-                var li = document.createElement('li');
-                var append = JSON.parse(data.append[i-msgCount]);
-                console.log('test00: ',append.message);                
-                li.appendChild(document.createTextNode(append.message));
-                 
-                msgListElement.appendChild(li);
-            }
-            poll();
-        } else {
-            console.log('inside failure');
-            // We reached our target server, but it returned an error
-        }
-    };
-    request.onerror = function() {
-        console.log('inside connection error');
-        // There was a connection error of some sort    
-    };
-                
-    request.send();      
+function poll() {
+        console.log('inside poll');
+        var msgListElement = document.querySelector('.msglist');
+        var clientMsgsCount = msgListElement.children.length;
+        Babble.getMessages(clientMsgsCount);
 }
 
 poll();

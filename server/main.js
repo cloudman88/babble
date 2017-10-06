@@ -1,11 +1,13 @@
 var http = require('http'),
-url = require('url'),
-queryUtil = require('querystring'),
-port = 9000;
+    url = require('url'),
+    queryUtil = require('querystring'),
+    fs = require('fs'),
+    clients = [], //responses
+    serverMsgs = [],
+    messages = require('./messages-util.js'),
+    id = 0;
 
-fs = require('fs'),
-clients = [], //responses
-messages = [];
+//module.exports = serverMsgs;
 
 http.createServer(function (req, res) {
     res.writeHead(200, {
@@ -32,13 +34,16 @@ http.createServer(function (req, res) {
                // console.log("req end");
                 var msg = { name : reqDetails.name, email : reqDetails.email , message : reqDetails.message};
                 // add message
-                messages.push(JSON.stringify(msg));
+                //console.log("msgsUtils : ",messages);
+                var id = messages.addMessage(JSON.stringify(msg));   
+                console.log("id : ",id);
+                //messages.push(JSON.stringify(msg));
                 console.log("msg : ",msg);
-                console.log("messages: ",messages);
+                console.log("serverMsgs: ",serverMsgs);
                 while(clients.length > 0) {
                     var client = clients.pop();
                     client.end(JSON.stringify( {
-                    count: messages.length,
+                    count: serverMsgs.length,
                     append: [JSON.stringify(msg)] }));
                 }
                 res.end(JSON.stringify({id:42}));
@@ -56,12 +61,12 @@ http.createServer(function (req, res) {
         else if(url_parts.pathname.substr(0, 5) == '/poll') { //change to /messages?counter=XX 
                 // polling code here
                 var count = url_parts.pathname.replace(/[^0-9]*/, '');
-                console.log('inside poll, count: ',count,'messages.length: ', messages.length);
-                if(messages.length > count) {
-                    console.log('inside messages.length > count');                
+                console.log('inside poll, count: ',count,'serverMsgs.length: ', serverMsgs.length);
+                if(serverMsgs.length > count) {
+                    console.log('inside serverMsgs.length > count');                
                     res.end(JSON.stringify({
-                        count: messages.length,
-                        append: messages.slice(count)}));
+                        count: serverMsgs.length,
+                        append: serverMsgs.slice(count)}));
                 } 
                 else {
                     console.log('client push ');
@@ -77,5 +82,5 @@ http.createServer(function (req, res) {
     else if(req.method == 'DELETE'){
     //todo
     }
-    }).listen(port, 'localhost');
-console.log('Server running on port: '+ port);
+    }).listen(9000, 'localhost');
+console.log('Server running on port: '+ 9000);
