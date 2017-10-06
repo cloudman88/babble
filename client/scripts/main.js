@@ -45,39 +45,17 @@ function login(){
     });
 }
 
-/*
-document.getElementById("loginBtn").addEventListener('submit' , function(event){
+
+document.getElementById("msgform").addEventListener('submit', function(event) {
     event.preventDefault();
-    var modalElement = document.getElementById('myModal');
-    modalElement.style.display = "none";
-    Babble.register({
-        name : document.getElementById("uname").innerText,
-        email : document.getElementById("uemail").innerText
+    console.log('inside click event listener');
+    var eventDetails = JSON.parse(localStorage.getItem('babble'));
+    Babble.postMessage({name : eventDetails.userInfo.name,
+                email : eventDetails.userInfo.email,
+                message : document.getElementById('msgBox').value
     });
-})
-*/
-
-
-var element = document.getElementById("msgform");
-//var element = document.querySelector(".msg-form");
-if(element){
-    console.log('inside element');
-    element.addEventListener('submit', function(event) {
-        event.preventDefault();
-        //Babble.postMessage(message:Object, callback:Function)
-        console.log('inside click event listener');
-        var eventDetails = JSON.parse(localStorage.getItem('babble'));
-        Babble.postMessage({name : eventDetails.userInfo.name,
-                    email : eventDetails.userInfo.email,
-                    message : document.getElementById('msgBox').value
-        });
-        document.getElementById("msgBox").value="";
-    },false);
-}
-else {
-        console.log('else click event listener');
-}
-
+    document.getElementById("msgBox").value="";
+},false);
 
 //Babble.getMessages(counter, callback)
 var poll = function() {
