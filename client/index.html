@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +12,14 @@
 
 <!-- Login Modal -->
 <div id="myModal" class="modal">  
-  <form class="modal-content animate" action="/action_page.php">
+  <form class="modal-content animate" id="my-modal" action="/action_page.php">
     <div class="container">
       <h1>Who Are You ?</h1>
 
-      <label><b>Username</b></label>
+      <label for="my-modal"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
-      <label><b>Email</b></label>
+      <label for="my-modal"><b>Email</b></label>
       <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required>
         
       <button type="button" onclick="login()" class="loginBtn" id="loginBtn">Save</button>
@@ -38,7 +38,7 @@
 </ol>
     <form id="msgform" class="msg-form">
         <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
-            <img src="./images/button.jpg">
+            <img src="./images/button.jpg" alt="submit button">
         </button>
     </form>
     <textarea class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
