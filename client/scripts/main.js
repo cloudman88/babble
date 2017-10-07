@@ -90,7 +90,7 @@ function addMessageToClient(mesgDetails){
     console.log('time d: ', d);
 
     // create timestampFromUnix()
-    var time =document.createElement('time');
+    var time =document.createElement('time'); 
     // Create a new JavaScript Date object based on the timestamp
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
     var date = new Date(mesgDetails.timestamp*1000);
