@@ -21,15 +21,25 @@ main {
 
 ol {
     width: 95%;
-    height: 285px;
-    -ms-grid-row: 250;
-    background-color:lightgray;
+    height: 340px;
+    -ms-grid-row: 400;
+    overflow-y: scroll;
 }
 
-/*
 li {
-    list-style-type: none;
-}*/
+    list-style-type: none; 
+    border: 2px solid lightgrey;
+    border-radius: 8px;
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 20px;
+}
+
+.li p {
+    line-height: 20%;
+}
+
 
 .msg-form{
     position: fixed;
@@ -70,9 +80,8 @@ input{
 
 nav {
     position: fixed;
-    top: 21%;
+    top: 15%;
     width: 160px;
-    min-height: 21%;
     height: 100%; 
     background-color: #61D292;
 }
