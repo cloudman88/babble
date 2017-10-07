@@ -38,17 +38,14 @@ window.Babble = {
                 console.log('added load event listener');
         });
         var url = 'http://localhost:9000/messages?counter='+counter;
-        //request.open('GET', 'http://localhost:9000/poll/'+counter, true);
         request.open('GET',url, true);
         request.onload = function() {
             console.log('inside onload');
-            if (request.status >= 200 && request.status < 400) {
-                // Success!
+            if (request.status >= 200 && request.status < 400) { // Success!                
                 console.log('inside success');
                 var data = JSON.parse(this.responseText);
                 console.log('test: ',data);
                 console.log('counter: ',counter);
-                // todo addMessageToClient
                 var msgListElement = document.querySelector('.msglist');            
                 for (i = counter; i < data.count; i++) {
                     var li = document.createElement('li');
@@ -57,13 +54,11 @@ window.Babble = {
                 } 
                 poll(); 
             } else {
-                console.log('inside failure');
-                // We reached our target server, but it returned an error
+                console.log('inside failure'); // We reached our target server, but it returned an error                
             }
         };
             request.onerror = function() {
-            console.log('inside connection error');
-            // There was a connection error of some sort    
+            console.log('inside connection error'); // There was a connection error of some sort    
         };
         request.send();
     }
@@ -79,8 +74,6 @@ window.addEventListener('load',function(){
 function addMessageToClient(mesgDetails){
     console.log('mesgDetails: ',mesgDetails);
     
-    var li = document.createElement('li');
-
     var cite = document.createElement('cite');
     cite.innerText = mesgDetails.name+' ';
     console.log('cite user name : ', cite);
@@ -102,16 +95,37 @@ function addMessageToClient(mesgDetails){
     var formattedTime = hours + ':' + minutes.substr(-2);
     console.log('time formattedTime: ', formattedTime);
     time.innerText = formattedTime;
-    li.appendChild(cite);
-    li.appendChild(time);
+    
     var p = document.createElement('p');
     p.innerText = mesgDetails.message;
-    li.appendChild(p);    
+   // p.appendChild(cite);
+   // p.appendChild(time);
+
+    var userImg = document.createElement("img");
+    userImg.alt="";
+    userImg.className="userPic";
+    userImg.src="http://free-icon-rainbow.com/i/icon_04682/icon_046820_256.jpg";
+    
+  //  li.appendChild(cite);
+  //  li.appendChild(time);
+    
+//    cite.className="my-p";
+//    time.className="my-p";
+//    p.className="my-p";
+
+    var div = document.createElement('div');
+    div.className="my-div";
+    div.appendChild
+
+    var li = document.createElement('li');
+    div.appendChild(cite);    
+    div.appendChild(time);    
+    div.appendChild(p);    
+    li.appendChild(userImg);
+    li.appendChild(div);    
     var msgListElement = document.querySelector('.msglist');
     msgListElement.appendChild(li);
 
-
-    //var elem = document.getElementById('data');
     msgListElement.scrollTop = msgListElement.scrollHeight;
 }
 

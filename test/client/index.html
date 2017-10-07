@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vegans - Babble</title>
-    <link rel="stylesheet" href="styles/main.css" type="text/css">
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="../../node_modules/mocha/mocha.css">		
 </head>
 <body>
 
-<!-- Login Modal -->
-<div id="myModal" class="modal">           
+  <div id="mocha"></div>
+
+<div id="myModal" class="modal" hidden="hidden">           
 
   <form class="modal-content animate" id="my-modal" action="/action_page.php">
-    <div class="container">
-      <h1>Who Are You ?</h1>
+    <div class="container" hidden="hidden">
+      <h1 >Who Are You ?</h1>
 
       <label for="uname"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
@@ -29,21 +26,28 @@
   </form>
 </div>
 
-<!-- Page content -->
-<header>
-    <img src="images/logo.jpg" alt="logo" />
-</header>
-<main>
+
+<main hidden="hidden">
     <h1 class="main-h1">Vegans</h1>
     <ol class="msglist"> </ol>
     <form id="msgform" class="msg-form">        
         <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
         <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
-                <img src="./images/button.jpg" alt="submit button">
+               
         </button>
     </form>
-</main>
-<nav></nav>
-    <script src="scripts/main.js"></script>
+</main> 
+  
+  <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+  <script>mocha.setup('bdd')</script>  
+  <script src="../../node_modules/mocha/mocha.js"></script>
+  <script src="../../node_modules/chai/chai.js"></script>
+  <script src="../../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../../client/scripts/main.js"></script>
+  <script src="test.js"></script>
+	
+  <script>
+    mocha.run();
+  </script>
 </body>
 </html>
