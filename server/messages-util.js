@@ -27,7 +27,8 @@ module.exports = {
         var i = 0;
         while (stop!=true && i< serverMsgs.length){
             console.log(i,': ',serverMsgs[i]);
-            if ((serverMsgs[i].timestamp).toString() === id) {
+            var intId = parseInt(id);
+            if (serverMsgs[i].timestamp === intId) {
                 serverMsgs.splice(i, 1);
                 stop=true;
             }            

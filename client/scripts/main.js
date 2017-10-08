@@ -104,26 +104,36 @@ function addMessageToClient(mesgDetails){
     userImg.className="userPic";
     userImg.src="http://free-icon-rainbow.com/i/icon_04682/icon_046820_256.jpg";
     
-    var deleteBtn = document.createElement("BUTTON");
-    //deleteBtn.hidden = "hidden";
-    deleteBtn.type = "submit";
-    deleteBtn.class = "delBtn";
-    deleteBtn.setAttribute('aria-label', "delete button");
-    deleteBtn.onclick =  function(){ 
-        Babble.deleteMessage(mesgDetails.timestamp, removeListItemById);
-    };
-    
-
-    var deleteBtnImg = document.createElement("img");
-    deleteBtnImg.alt = "delete button";
-    deleteBtnImg.src = "./images/delete.png";
-    deleteBtn.appendChild(deleteBtnImg);
-
     var div = document.createElement('div');
     div.className="my-div";
     div.appendChild(cite);    
     div.appendChild(time);    
-    div.appendChild(deleteBtn);    
+    
+    
+    var ls = JSON.parse(localStorage.getItem('babble'));
+    var clientEmail = ls.userInfo.email;
+
+    if (mesgDetails.email === clientEmail && 
+        mesgDetails.email !==''){
+        var deleteBtn = document.createElement("BUTTON");
+        //deleteBtn.hidden = "hidden";
+        deleteBtn.type = "submit";
+        deleteBtn.class = "delBtn";
+        deleteBtn.setAttribute('aria-label', "delete button");
+        deleteBtn.onclick =  function(){ 
+            Babble.deleteMessage(mesgDetails.timestamp, removeListItemById);
+        };
+        
+        var deleteBtnImg = document.createElement("img");
+        deleteBtnImg.alt = "delete button";
+        deleteBtnImg.src = "./images/delete.png";
+        deleteBtn.appendChild(deleteBtnImg);
+        div.appendChild(deleteBtn);    
+
+    }
+
+    
+
     div.appendChild(p);    
 
     var li = document.createElement('li');
