@@ -16,8 +16,6 @@
   },
   "scripts": {
     "test": "mocha test/server/test.js & http-server -a localhost -p 8081",
-    "mocha-test": "mocha test/server/test.js",
-    "server-test": "http-server -a localhost -p 8081",
     "start": "npm-run-all -p -r file-server api-server",
     "api-server": "nodemon server/main.js",
     "file-server": "http-server ./client -p 8080"
