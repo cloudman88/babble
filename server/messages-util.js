@@ -19,7 +19,19 @@ module.exports = {
     getMsgCounter : function() {
         if (serverMsgs!= undefined) return serverMsgs.length;
         else console.log('serverMsgs is undefined!!');
+    },
+
+    //messages.deleteMessage(id:String)
+    deleteMessage: function(id){
+        var stop = false;
+        var i = 0;
+        while (stop!=true && i< serverMsgs.length){
+            console.log(i,': ',serverMsgs[i]);
+            if ((serverMsgs[i].timestamp).toString() === id) {
+                serverMsgs.splice(i, 1);
+                stop=true;
+            }            
+            i++;
+        }
     }
 };
-
-//messages.deleteMessage(id:String)

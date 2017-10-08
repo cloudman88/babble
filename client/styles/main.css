@@ -34,6 +34,7 @@ li {
 
 p {     
     line-height: 80%;
+    word-wrap: break-word; 
 }
 
 .my-div{
@@ -55,6 +56,13 @@ p {
     height:50px;
 }
 
+.delBtn{
+    position: relative;
+    right: 0;
+    background: white;
+    height: 5px;
+    width: 5px;
+}
 .msg-form{
     position: fixed;
     left: 125px;
@@ -67,23 +75,13 @@ p {
         width: 75%;
         height: 85px;
         background-color:lightblue;
+       padding-left: 25px;
        -ms-grid-row: 4;
         columns: 130;
         position: fixed;
-
+        left: 11%;
         bottom: 0;
 }
-
-/*
-input{
-    width: 100%;
-    height: 100px;
-    background-color:blue;
-    padding-left:0;
-    padding-top:0;
-    padding-bottom:0.4em;
-    padding-right: 0.4em;
-}*/
 
 .submitBtnImg {
     position: fixed;
