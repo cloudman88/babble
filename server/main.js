@@ -3,11 +3,7 @@ var http = require('http'),
     queryUtil = require('querystring'),
     fs = require('fs'),
     clients = [], //responses
-    serverMsgs = [],
-    //messages = require('./messages-util.js'),
-    id = 0;
-
-//module.exports = serverMsgs;
+    messages = require('./messages-util.js');
 
 http.createServer(function (req, res) {
     res.writeHead(200, {
@@ -34,16 +30,12 @@ http.createServer(function (req, res) {
                 var msg = { name : reqBody.name, email : reqBody.email ,
                              message : reqBody.message , timestamp: reqBody.timestamp};
                 // add message
-                //console.log("msgsUtils : ",messages);
-                //var id = messages.addMessage(JSON.stringify(msg));   
-                serverMsgs.push(JSON.stringify(msg));
-                var counter =serverMsgs.length;
+                var counter = messages.addMessage(JSON.stringify(msg));
                 console.log("id : ",counter,"msg : ",msg);
-                console.log("serverMsgs: ",serverMsgs);
                 while(clients.length > 0) {
                     var client = clients.pop();
                     client.end(JSON.stringify( {
-                    count: serverMsgs.length,
+                    count: counter,
                     append: [JSON.stringify(msg)] }));
                 }
                 res.end(JSON.stringify({id:counter})); //return count of msgs
@@ -62,16 +54,16 @@ http.createServer(function (req, res) {
         } 
         
         else if(url_parts.path.substr(0, 18) == '/messages?counter=') { // polling
-                // polling code here                                
                 var captured = /counter=([^&]+)/.exec(url_parts.path)[1]; // Value is in [1] ('384' in our case)
-                var counter = captured ? captured : 0;                
-                console.log('inside poll. ', 'serverMsgs.length: ', serverMsgs.length);
+                var counter = captured ? captured : 0;     
+                console.log('messages utills ', messages);           
                 console.log('captured:',captured,'counter:',counter);               
-                if(serverMsgs.length > counter) {
-                    console.log('inside serverMsgs.length > counter');                
+                var msgCounter = messages.getMsgCounter();
+                if(msgCounter > counter) {
+                    console.log('inside messages.serverMsgs.length > counter');                
                     res.end(JSON.stringify({
-                        count: serverMsgs.length,
-                        append: serverMsgs.slice(counter,serverMsgs.length)}));
+                        count: msgCounter,
+                        append: messages.getMessages(counter)}));
                 } 
                 else {
                     console.log('client push ');

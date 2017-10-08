@@ -18,17 +18,10 @@ window.Babble = {
     },
 
     //Babble.register(userInfo:Object)
-    register : function register(userInfo){        
-        if (userInfo.email !=""){
-            localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
-                                                            userInfo: { name: userInfo.name,
-                                                                        email: userInfo.email }}));        
-        }
-        else {
-            localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
-                                                            userInfo: { name: "Anonymmous",
-                                                                        email: '' }}));        
-        }
+    register : function register(userInfo){ 
+        localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
+                                                userInfo: { name: userInfo.name,
+                                                            email: userInfo.email }}));         
     },
 
     //Babble.getMessages(counter, callback)
@@ -40,12 +33,12 @@ window.Babble = {
         var url = 'http://localhost:9000/messages?counter='+counter;
         request.open('GET',url, true);
         request.onload = function() {
-            console.log('inside onload');
             if (request.status >= 200 && request.status < 400) { // Success!                
                 console.log('inside success');
                 var data = JSON.parse(this.responseText);
-                console.log('test: ',data);
+                console.log('data: ',data);
                 console.log('counter: ',counter);
+                if (callback!= undefined)  callback(data.append); //todo
                 var msgListElement = document.querySelector('.msglist');            
                 for (i = counter; i < data.count; i++) {
                     var li = document.createElement('li');
@@ -67,8 +60,11 @@ window.Babble = {
 window.addEventListener('load',function(){
     //if (window.localStorage || localStorage.userInfo.name =="" || localStorage.userInfo.name =="Anonymous")
     //{    }
-        var modalElement = document.getElementById('myModal');
-        modalElement.style.display = "block";
+    localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
+                                                    userInfo: { name: '',
+                                                                email: '' }}));        
+    var modalElement = document.getElementById('myModal');
+    modalElement.style.display = "block";
 },false);
 
 function addMessageToClient(mesgDetails){

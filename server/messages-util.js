@@ -1,41 +1,25 @@
-//console.log('mainServerSctiprt0: ',mainServerSctiprt);
-//console.log('mainServerSctiprt0id: ',mainServerSctiprt.id);
+var serverMsgs = [];
 
 module.exports = {
-     mainServerSctiprt : require('./main.js'),
     //messages.addMessage(message:Object) : Number(id)
     addMessage : function (message){
-        console.log('addMessage server');
-        console.log('mainServerSctiprt ',mainServerSctiprt);
-        mainServerSctiprt.id++;
-        message.id = mainServerSctiprt.id;
-        console.log('mainServerSctiprt.serverMsgs ',mainServerSctiprt.serverMsgs);
-        mainServerSctiprt.serverMsgs.push(message);
-        return mainServerSctiprt.idCounter;
+        console.log('inside addMessage. serverMsgs ',serverMsgs);
+        serverMsgs.push(message);
+        console.log('lenght ',serverMsgs.length);
+        var msgCount =serverMsgs.length; 
+        return msgCount;
+    },
+
+    //messages.getMessages(counter:Number) : Array(messages)
+    getMessages : function(counter) {
+        if (serverMsgs!= undefined) return serverMsgs.slice(counter,serverMsgs.length);
+        else console.log('serverMsgs is undefined!!');
+    },
+
+    getMsgCounter : function() {
+        if (serverMsgs!= undefined) return serverMsgs.length;
+        else console.log('serverMsgs is undefined!!');
     }
 };
 
-/*
-(function(){
-    console.log('inside messages utils');
-    // public api
-    return {
-        addMessage : function(message){
-        //function addMessage(message){
-        console.log('addMessage server');
-        mainServerSctiprt.id++;
-        message.id = mainServerSctiprt.id;
-        mainServerSctiprt.messages.push(message);
-        return mainServerSctiprt.idCounter;
-        },        
-        // OK
-        getNumber: function(){
-             return 32;   
-        },
-    };
-})();
-*/
-//var addMessage = function(message){
-
-//messages.getMessages(counter:Number) : Array(messages)
 //messages.deleteMessage(id:String)

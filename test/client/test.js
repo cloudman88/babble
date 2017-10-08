@@ -4,10 +4,7 @@ let assert = window.chai.assert;
 let sinon = window.sinon;
 let Babble = window.Babble;
 
-console.log('hey from test js');
-
 describe('LocalStorage', function() {
-  console.log('desc ls');
   it('should have one key named babble in json format', function() {
     let keys = Object.keys(localStorage);
     assert.equal(keys.length, 1);
