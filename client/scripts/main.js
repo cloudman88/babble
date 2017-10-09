@@ -4,7 +4,7 @@ window.Babble = {
     //Babble.postMessage(message:Object, callback:Function)
     postMessage : function postMessage(message, callback){
         console.log('inside postMessage');
-        console.log('sending msg: ', message );
+        console.log('sending msg: ', message);
         var request = new XMLHttpRequest();
         //todo callback
         request.open('POST','http://localhost:9000/messages',true);
@@ -20,8 +20,8 @@ window.Babble = {
     //Babble.register(userInfo:Object)
     register : function register(userInfo){ 
         localStorage.setItem('babble',JSON.stringify({ currentMessage: '',
-                                                userInfo: { name: userInfo.name,
-                                                            email: userInfo.email }}));         
+                                                        userInfo: { name: userInfo.name,
+                                                                    email: userInfo.email }}));         
     },
 
     //Babble.getMessages(counter, callback)
@@ -88,10 +88,7 @@ function addMessageToClient(mesgDetails){
     console.log('mesgDetails: ',mesgDetails);
     
     var cite = document.createElement('cite');
-    if (mesgDetails.name != "") cite.innerText = mesgDetails.name+' ';
-    else cite.innerText = "Anonymous ";
-    
-    console.log('cite user name : ', cite);
+    cite.innerText =  (mesgDetails.name != "") ? mesgDetails.name+' ' : "Anonymous ";    
 
     var time =document.createElement('time'); 
     time.innerText = createTimeFromUnix(mesgDetails.timestamp);
@@ -102,21 +99,21 @@ function addMessageToClient(mesgDetails){
     var userImg = document.createElement("img");
     userImg.alt="";
     userImg.className="userPic";
-    userImg.src="http://free-icon-rainbow.com/i/icon_04682/icon_046820_256.jpg";
     
+    userImg.src = (mesgDetails.email ==='') ? 
+            "http://free-icon-rainbow.com/i/icon_04682/icon_046820_256.jpg" :
+             getGravatarByHash(mesgDetails.emailHash);
+
     var div = document.createElement('div');
     div.className="my-div";
     div.appendChild(cite);    
     div.appendChild(time);    
-    
-    
+        
     var ls = JSON.parse(localStorage.getItem('babble'));
     var clientEmail = ls.userInfo.email;
 
-    if (mesgDetails.email === clientEmail && 
-        mesgDetails.email !==''){
+    if (mesgDetails.email === clientEmail && mesgDetails.email !==''){
         var deleteBtn = document.createElement("BUTTON");
-        //deleteBtn.hidden = "hidden";
         deleteBtn.type = "submit";
         deleteBtn.class = "delBtn";
         deleteBtn.setAttribute('aria-label', "delete button");
@@ -129,11 +126,7 @@ function addMessageToClient(mesgDetails){
         deleteBtnImg.src = "./images/delete.png";
         deleteBtn.appendChild(deleteBtnImg);
         div.appendChild(deleteBtn);    
-
     }
-
-    
-
     div.appendChild(p);    
 
     var li = document.createElement('li');
@@ -144,6 +137,11 @@ function addMessageToClient(mesgDetails){
     var msgListElement = document.querySelector('.msglist');
     msgListElement.appendChild(li);
     msgListElement.scrollTop = msgListElement.scrollHeight;
+}
+
+function getGravatarByHash(hash){
+    var baseUrl = "//www.gravatar.com/avatar/";    
+    return (baseUrl + hash + '?d=wavatar').trim();
 }
 
 function removeListItemById(id){
@@ -157,15 +155,11 @@ function removeListItemById(id){
    }
 }
 
-function createTimeFromUnix(timestamp){
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(timestamp*1000);
-    // Hours part from the timestamp
-    var hours = date.getHours();
-    // Minutes part from the timestamp
-    var minutes = "0" + date.getMinutes();
-    // Will display time in 10:30 format
-    var formattedTime = hours + ':' + minutes.substr(-2);
+function createTimeFromUnix(timestamp){   
+    var date = new Date(timestamp*1000);  // multiplied by 1000 to get args is in milliseconds.
+    var hours = date.getHours();  // Hours part from the timestamp   
+    var minutes = "0" + date.getMinutes();  // Minutes part from the timestamp    
+    var formattedTime = hours + ':' + minutes.substr(-2); // Display time fomat 10:30 
     console.log('time formattedTime: ', formattedTime);
     return formattedTime;
 }

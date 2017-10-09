@@ -4,6 +4,7 @@
   "description": "Lab project",
   "main": "server/main.js",
   "dependencies": {
+    "gravatar": "^1.6.0",
     "md5": "^2.2.1",
     "node-sass": "^4.5.3",
     "nodemon": "^1.12.1",

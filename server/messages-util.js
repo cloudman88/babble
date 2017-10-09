@@ -5,8 +5,7 @@ module.exports = {
     addMessage : function (message){
         console.log('inside addMessage. serverMsgs ',serverMsgs);
         serverMsgs.push(message);
-        console.log('lenght ',serverMsgs.length);
-        var msgCount =serverMsgs.length; 
+        var msgCount = serverMsgs.length; 
         return msgCount;
     },
 
