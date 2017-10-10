@@ -18,7 +18,7 @@ header {
 main {
     position: relative;
     left: 10%;
-    width: 85%;
+    width: 87%;
 }
 
 ol {
@@ -114,29 +114,27 @@ nav {
 }
 
 .stats{
-        display: inline-block;
-
+    display: inline-block;    
+}
+.stats-div{
     position: fixed;
     right: 50px;
     top : 110px;
 }
-
 dt {
-  float: right;
   width: 50%;
   /* adjust the width; make sure the total of both is 100% */
   padding: 0;
   margin: 0
 }
 dd {
-  float: right;
   width: 50%;
   /* adjust the width; make sure the total of both is 100% */
   padding: 0;
   margin: 0
 }
-
 .terms{
+    display: inline-block;
     display: none;
 }
 

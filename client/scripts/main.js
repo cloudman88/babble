@@ -195,7 +195,7 @@ function addMessageToClient(mesgDetails){
     userImg.className="userPic";
     
     userImg.src = (mesgDetails.email ==='') ? 
-            "http://free-icon-rainbow.com/i/icon_04682/icon_046820_256.jpg" :
+            './images/anonymous-profile-pic.jpg' :
              getGravatarByHash(mesgDetails.emailHash);
 
     var div = document.createElement('div');

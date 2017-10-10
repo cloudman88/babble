@@ -38,13 +38,19 @@
     <h2 class="main-h1">Vegans</h2>
 
     <!-- stats definition list-->
-    <dl class="stats">
-        <dt class="terms">Msgs</dt>
-        <dd id="statsMsg">0</dd>
-        <dt class="terms">Users</dt>
-        <dd id="statsUsers">0</dd>
-    </dl>
-    
+    <div class="stats-div">
+        <img class="stats" src="./images/messages-counter-icon.jpg" alt="messages counter icon">
+        <dl class="stats">
+            <dt class="terms">Msgs</dt>        
+            <dd id="statsMsg">0</dd>
+        </dl>
+        <img class="stats" src="./images/users-counter-icon.jpg" alt="users counter icon">
+        <dl class="stats">
+            <dt class="terms">Users</dt>
+            <dd id="statsUsers">0</dd>
+        </dl>
+    </div>    
+
     <ol class="msglist"></ol>
     <form id="msgform" class="msg-form">        
         <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
