@@ -207,21 +207,25 @@ function addMessageToClient(mesgDetails){
     var clientEmail = ls.userInfo.email;
 
     if (mesgDetails.email === clientEmail && mesgDetails.email !==''){
-        var deleteBtn = document.createElement("BUTTON");
-        deleteBtn.type = "submit";
-        deleteBtn.class = "delBtn";
-        deleteBtn.setAttribute('aria-label', "delete button");
-        deleteBtn.onclick =  function(){ 
-            Babble.deleteMessage(mesgDetails.timestamp, removeListItemById);
-        };
-        
-        var deleteBtnImg = document.createElement("img");
-        deleteBtnImg.alt = "delete button";
-        deleteBtnImg.src = "./images/delete.jpg";
-        deleteBtn.appendChild(deleteBtnImg);
+        var deleteBtn =  createDeleteButton(mesgDetails.timestamp);
+
+        div.addEventListener("mouseover",function(){
+            deleteBtn.style.visibility="visible";
+        });
+        div.addEventListener("mouseout", function(){
+            deleteBtn.style.visibility="hidden";
+        });
+        div.addEventListener("focus", function(){
+            deleteBtn.style.visibility="visible";
+        });
+        div.addEventListener("focusout", function(){
+            deleteBtn.style.visibility="hidden";
+        });
+
         div.appendChild(deleteBtn);    
     }
     div.appendChild(p);    
+    div.setAttribute('tabindex','0');
 
     var li = document.createElement('li');
     li.appendChild(userImg);
@@ -231,6 +235,25 @@ function addMessageToClient(mesgDetails){
     var msgListElement = document.querySelector('.msglist');
     msgListElement.appendChild(li);
     msgListElement.scrollTop = msgListElement.scrollHeight;
+}
+
+function createDeleteButton(divId){
+        var deleteBtn = document.createElement("BUTTON");
+        deleteBtn.type = "submit";
+        deleteBtn.style.visibility="hidden";
+        deleteBtn.class = "delBtn";
+        deleteBtn.setAttribute('aria-label', "delete button");
+        deleteBtn.onclick =  function(){ 
+            Babble.deleteMessage(divId, removeListItemById);
+        };
+        
+        var deleteBtnImg = document.createElement("img");
+        deleteBtnImg.alt = "delete button";
+        deleteBtnImg.src = "./images/delete.jpg";        
+
+        deleteBtn.appendChild(deleteBtnImg);
+
+        return deleteBtn;
 }
 
 function getGravatarByHash(hash){
@@ -257,13 +280,12 @@ function createTimeFromUnix(timestamp){
     return formattedTime;
 }
 
-function login(){ //todo anonymous with uname,uemail
+function login(isAnonymous){
     var modalElement = document.getElementById('myModal');
     modalElement.style.display = "none";
-    Babble.register({
-        name : document.getElementById("uname").value,
-        email : document.getElementById("uemail").value
-    });
+    var name =(isAnonymous==true) ? '' : document.getElementById("uname").value;
+    var email =(isAnonymous==true) ? '' : document.getElementById("uemail").value;
+    Babble.register({name,email});
     Babble.getStats(updateStats);
     Babble.login();
     poll();

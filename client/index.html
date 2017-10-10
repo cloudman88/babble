@@ -24,8 +24,8 @@
       <label for="uemail"><b>Email</b></label>
       <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required value="cloud@man">
         
-      <button type="button" onclick="login()" class="loginBtn" id="loginBtn">Save</button>
-      <button type="button" onclick="login()" class="anonymousByn">Stay Anonymous</button>
+      <button type="button" onclick="login(false)" class="loginBtn" id="loginBtn">Save</button>
+      <button type="button" onclick="login(true)" class="anonymousByn">Stay Anonymous</button>
     </div>  
   </form>
 </div>
@@ -35,13 +35,13 @@
     <img src="images/logo.jpg" alt="logo" />
 </header>
 <main>
-    <h1 class="main-h1">Vegans</h1>
+    <h2 class="main-h1">Vegans</h2>
 
     <!-- stats definition list-->
     <dl class="stats">
-        <dt>Msgs</dt>
+        <dt class="terms">Msgs</dt>
         <dd id="statsMsg">0</dd>
-        <dt>Users</dt>
+        <dt class="terms">Users</dt>
         <dd id="statsUsers">0</dd>
     </dl>
     
