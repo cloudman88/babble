@@ -3,17 +3,30 @@ console.log('inside client script');
 window.Babble = {
     //Babble.postMessage(message:Object, callback:Function)
     postMessage : function postMessage(message, callback){
-        console.log('inside postMessage, the msg: ',message);
-        var request = new XMLHttpRequest();
-        request.open('POST','http://localhost:9000/messages',true);
-        request.onload = function () {
-            if (request.status >= 200 && request.status < 400) {
-                //todo callback     
-                if (callback!=undefined) callback();
-                updateStatsMsg();
+
+        try{
+            console.log('inside postMessage, the msg: ',message);
+            var request = new XMLHttpRequest();
+            request.open('POST','http://localhost:9000/messages',true);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    //todo callback     
+                    if (callback!=undefined) callback();
+                  //  updateStatsMsg();
+                }
+                else{
+                    console.log('request.status postMessage',request.status);
+                }
             }
+            request.onerror = function() {
+                console.log('inside postMessage connection error'); // There was a connection error of some sort    
+            }
+            request.send(JSON.stringify(message));
         }
-        request.send(JSON.stringify(message));
+        catch(e){
+                console.log('postmessage e: ',e);
+        }
+
     },
 
     //Babble.register(userInfo:Object)
@@ -35,13 +48,10 @@ window.Babble = {
             if (request.status >= 200 && request.status < 400) { // Success!                
                 var data = JSON.parse(this.responseText);
                 console.log('counter: ',counter,' data: ',data);
-                if (callback!= undefined)  callback(data.append); //todo
-                var msgListElement = document.querySelector('.msglist');            
-                for (i = counter; i < data.count; i++) {
-                    var li = document.createElement('li');
-                    var append = data.append[i-counter];
-                    addMessageToClient(append);
-                } 
+                if (callback!= undefined)
+                {
+                    callback(counter,data); //todo
+                }  
                 poll();  
             } else {
                 console.log('inside failure'); // We reached our target server, but it returned an error                
@@ -61,12 +71,10 @@ window.Babble = {
         var result;
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
-                var data = JSON.parse(this.responseText);
-                console.log(' data del: ',data);                
                 if (callback!= undefined){
-                    callback(data.id);
+                    callback(id);
                 }
-                updateStatsMsg();
+               // updateStatsMsg();
                 //  callback(0);  //todo callback. update message on this client
             }
         }
@@ -84,7 +92,7 @@ window.Babble = {
                 console.log('getStats resBody: ',resBody);
                 if (callback!= undefined)  {
                     console.log('getStats callback is defined');
-                    callback(resBody);} //todo
+                    callback(resBody);}
                     Babble.getStats(updateStats);
                 }
 				else {
@@ -111,15 +119,23 @@ window.Babble = {
     },
 
     login : function(callback){
-        console.log('babble login');
-        var request = new XMLHttpRequest();
-        request.open('POST','http://localhost:9000/login',true);
-        request.onload = function () {
-            if (request.status >= 200 && request.status < 400) {
-                console.log('succes login ');
+        try{
+            console.log('babble login');
+            var request = new XMLHttpRequest();
+            request.open('POST','http://localhost:9000/login',true);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    console.log('succes login ');
+                }
+                else {
+                    console.log('request.status login ',request.status);
+                }
             }
+            request.send();
         }
-        request.send();
+        catch(e){   
+            console.log('e: ',e);
+        }
     }
 };
 
@@ -141,14 +157,19 @@ window.onbeforeunload = function(){
 
 function updateStats(stats){
     console.log('inside update stats');
-    updateStatsMsg(); //stats.messages
+    updateStatsMsg(stats.messages);
     updateStatsUsers(stats.users);
 }
 
-function updateStatsMsg(){
-    var statsMsgElement = document.getElementById("statsMsg");    
-    var msgListElement = document.querySelector('.msglist');
-    statsMsgElement.innerText = msgListElement.childNodes.length;
+function updateStatsMsg(msgsCount){
+    var statsMsgElement = document.getElementById("statsMsg");        
+    if (msgsCount!==undefined) {
+        statsMsgElement.innerText = msgsCount;
+    }   
+    else {
+        var msgListElement = document.querySelector('.msglist');
+        statsMsgElement.innerText = msgListElement.childNodes.length;
+    } 
 }
 
 function updateStatsUsers(usersCount){
@@ -156,10 +177,6 @@ function updateStatsUsers(usersCount){
     var clientUsersCount =parseInt(statsUsersElement.innerHTML);
     statsUsersElement.innerText = usersCount;
     console.log('clientUsersCount: ',clientUsersCount,'usersCount :',usersCount);
- /*   if (clientUsersCount < usersCount) {
-        console.log('calling statsPoll');
-        statsPoll();
-    }*/
 }
 
 function addMessageToClient(mesgDetails){
@@ -267,5 +284,15 @@ function poll() {
         console.log('inside poll');
         var msgListElement = document.querySelector('.msglist');
         var clientMsgsCount = msgListElement.children.length;
-        Babble.getMessages(clientMsgsCount);
+        Babble.getMessages(clientMsgsCount,updateClientMsgs);
+}
+
+function updateClientMsgs(counter,data){
+    //todo check data not null
+        var msgListElement = document.querySelector('.msglist');            
+        for (i = counter; i < data.count; i++) {
+            var li = document.createElement('li');
+            var append = data.append[i-counter];
+            addMessageToClient(append);
+        } 
 }

@@ -60,11 +60,11 @@ http.createServer(function (req, res) {
             });
         }
 
-        if(url_parts.pathname.substr(0, 6) == '/login') { 
+        else if(url_parts.pathname.substr(0, 6) == '/login') { 
             //todo add user to users
             console.log('## inside login ');
             req.on('data', function(data){
-//                reqBody = JSON.parse(data);
+                // reqBody = JSON.parse(data);
             });
             req.on('end', function(){
                 usersCounter++;
@@ -80,7 +80,7 @@ http.createServer(function (req, res) {
             });
         }
 
-        if(url_parts.pathname.substr(0, 7) == '/logout') { 
+        else if(url_parts.pathname.substr(0, 7) == '/logout') { 
             //todo add user to users
             console.log('## inside logout ');
             req.on('data', function(data){
@@ -99,6 +99,9 @@ http.createServer(function (req, res) {
             });
         }
         else {
+            console.log('inside else!!!');
+            console.log(req.url);
+            res.writeHead(404); // 404 non-existent URLs (not found)
             res.end(); // 404 non-existent URLs (not found)
         }
 
@@ -134,7 +137,8 @@ http.createServer(function (req, res) {
         }
         
         else {
-            res.end(); // 404non-existent URLs (not found)
+            res.writeHead(404); // 404 non-existent URLs (not found)
+            res.end();
         }
     }
 
@@ -152,10 +156,12 @@ http.createServer(function (req, res) {
                     var statsRes = statsResponses.pop();
                     statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter() }));
                 }
-                res.end(JSON.stringify({id: parseInt(id)}));          
+               // res.end(JSON.stringify({id: parseInt(id)}));          
+                res.end();          
         }
         else{
-           res.end(); // 404 non-existent URLs (not found)
+           res.writeHead(404); // 404 non-existent URLs (not found)
+            res.end();
         }
     //todo
     }
