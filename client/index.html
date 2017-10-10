@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vegans - Babble</title>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -18,10 +19,10 @@
       <h1>Who Are You ?</h1>
 
       <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
+      <input type="text" placeholder="Enter Username" name="uname" id="uname" required value="cloudman">
 
       <label for="uemail"><b>Email</b></label>
-      <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required>
+      <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required value="cloud@man">
         
       <button type="button" onclick="login()" class="loginBtn" id="loginBtn">Save</button>
       <button type="button" onclick="login()" class="anonymousByn">Stay Anonymous</button>
@@ -35,6 +36,12 @@
 </header>
 <main>
     <h1 class="main-h1">Vegans</h1>
+    <dl class="stats">
+        <dd id="statsMsg">0</dd>
+        <dt><span>Msgs</span></dt>
+        <dd id="statsUsers">0</dd>
+        <dt>Users</dt>
+    </dl>
     <ol class="msglist"></ol>
     <form id="msgform" class="msg-form">        
         <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>

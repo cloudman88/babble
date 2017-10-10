@@ -3,7 +3,9 @@ var http = require('http'),
     queryUtil = require('querystring'),
     fs = require('fs'),
     clients = [], //responses
+    statsResponses = [],
     md5 = require('md5'),
+    usersCounter = 0,
     messages = require('./messages-util.js');
 
 http.createServer(function (req, res) {
@@ -27,36 +29,77 @@ http.createServer(function (req, res) {
             });
             req.on('end', function(){ 
                 var msg = { name : reqBody.name, email : reqBody.email ,
-                             message : reqBody.message , timestamp: reqBody.timestamp,
+                            message : reqBody.message , timestamp: reqBody.timestamp,
                             emailHash: md5(reqBody.email)};
-                // add message
+                
                 var counter = messages.addMessage(msg);
                 console.log("id : ",counter,"msg : ",msg);
+                console.log("new msg clients.length : ",clients.length);
+                
                 while(clients.length > 0) {
                     var client = clients.pop();
                     client.end(JSON.stringify( {
                     count: counter,
                     append: [msg] }));
                 }
+                console.log('new msg statsResponses.length ',statsResponses.length);
+                console.log('new msg responseBody in login ',{users:usersCounter , messages:messages.getMsgCounter()});
+                
+                try {
+                    while(statsResponses.length > 0) {
+                        console.log('new msg looop');
+                        var statsRes = statsResponses.pop();
+                        statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter()}));
+                    }
+                }
+                catch(e){
+                    console.log("error caught:",e);
+                }
+
                 res.end(JSON.stringify({id:counter})); //return count of msgs
             });
         }
 
         if(url_parts.pathname.substr(0, 6) == '/login') { 
-            //add user to users
-            console.log('inside login ');
-            // message receiving
-            var reqBody;
-            req.on('data', function(data){        
-                reqBody = JSON.parse(data);
+            //todo add user to users
+            console.log('## inside login ');
+            req.on('data', function(data){
+//                reqBody = JSON.parse(data);
+            });
+            req.on('end', function(){
+                usersCounter++;
+                console.log('usersCounter after ++ ',usersCounter);
+                console.log('statsResponses.length ',statsResponses.length);
+                console.log('responseBody in login ',{users:usersCounter , messages:messages.getMsgCounter()});
+                while(statsResponses.length > 0) {
+                    console.log('looop');
+                    var statsRes = statsResponses.pop();
+                    statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter()}));
+                }
+                res.end(JSON.stringify(true));
+            });
+        }
+
+        if(url_parts.pathname.substr(0, 7) == '/logout') { 
+            //todo add user to users
+            console.log('## inside logout ');
+            req.on('data', function(data){
+             //   reqBody = JSON.parse(data);
             });
             req.on('end', function(){ 
-                // add message
-                var counter = messages.addMessage(msg);
-                console.log("id : ",counter,"msg : ",msg);
-
-                res.end(JSON.stringify({id:counter})); //return count of msgs
+                usersCounter--;
+                console.log('usersCounter after -- ',usersCounter);    
+                console.log('statsResponses.length  ',statsResponses.length);    
+                console.log('responseBody in logout ',{users:usersCounter , messages:messages.getMsgCounter()});
+                while(statsResponses.length > 0) {
+                    var statsRes = statsResponses.pop();
+                    statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter()}));
+                }
+                res.end();
             });
+        }
+        else {
+            res.end(); // 404 non-existent URLs (not found)
         }
 
     }   
@@ -67,12 +110,11 @@ http.createServer(function (req, res) {
             fs.readFile('../client/index.html', function(err, data) {
                 res.end(data);
             });
-        } 
+        }
         
         else if(url_parts.path.substr(0, 18) == '/messages?counter=') { // polling
                 var captured = /counter=([^&]+)/.exec(url_parts.path)[1];
                 var counter = captured ? captured : 0;     
-                console.log('captured:',captured,'counter:',counter);               
                 var msgCounter = messages.getMsgCounter();
                 if(msgCounter > counter) {
                     console.log('inside messages.serverMsgs.length > counter');                
@@ -86,17 +128,18 @@ http.createServer(function (req, res) {
                 }
         }
         
-        else if(url_parts.pathname.substr(0, 6) == '/stats') { //get statistics
-                // todo
+        else if(url_parts.pathname.substr(0, 6) == '/stats') { //get statistics: num of messages and num of users                                            
+                    console.log('statsResponses push ');
+                    statsResponses.push(res);
         }
         
         else {
-            res.end("else end");
+            res.end(); // 404non-existent URLs (not found)
         }
     }
 
     else if (req.method == 'OPTIONS'){
-        res.writeHead(204);
+        res.writeHead(204); //OPTIONS request (sometimes sent automatically by the browser)
         res.end();
     }
 
@@ -105,8 +148,15 @@ http.createServer(function (req, res) {
                 var id = url_parts.path.substr(10, url_parts.path.length); 
                 console.log('id in delete: ',id);               
                 messages.deleteMessage(id);
+                while(statsResponses.length > 0) {
+                    var statsRes = statsResponses.pop();
+                    statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter() }));
+                }
+                res.end(JSON.stringify({id: parseInt(id)}));          
         }
-        res.end(JSON.stringify(true));
+        else{
+           res.end(); // 404 non-existent URLs (not found)
+        }
     //todo
     }
     }).listen(9000, 'localhost');
