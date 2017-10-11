@@ -151,13 +151,19 @@ http.createServer(function (req, res) {
         if(url_parts.path.substr(0, 10) == '/messages/') {
                 var id = url_parts.path.substr(10, url_parts.path.length); 
                 console.log('id in delete: ',id);               
+                var countBeforeDelete = messages.getMsgCounter();
                 messages.deleteMessage(id);
-                while(statsResponses.length > 0) {
-                    var statsRes = statsResponses.pop();
-                    statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter() }));
+                var countAfterDelete = messages.getMsgCounter();
+                if (countBeforeDelete > countAfterDelete){
+                    while(statsResponses.length > 0) {
+                        var statsRes = statsResponses.pop();
+                        statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter() }));
+                    }
+                    res.end(JSON.stringify(true));          
                 }
-               // res.end(JSON.stringify({id: parseInt(id)}));          
-                res.end();          
+                else{
+                    res.end(JSON.stringify(false));
+                }
         }
         else{
            res.writeHead(404); // 404 non-existent URLs (not found)

@@ -7,34 +7,52 @@
 <body>
   <div id="mocha"></div>
 
-  <div id="myModal" class="modal" hidden="hidden">           
 
-    <form class="modal-content animate" id="my-modal" action="/action_page.php">
-      <div class="container" hidden="hidden">
-        <h1 >Who Are You ?</h1>
+  <!-- Login Modal -->
+<div id="myModal" class="modal" hidden="hidden">           
 
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
+  <form class="modal-content animate" id="my-modal" action="/action_page.php" hidden="hidden">
+    <div class="container">
+      <h1>Who Are You ?</h1>
 
-        <label for="uemail"><b>Email</b></label>
-        <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required>
-          
-        <button type="button" onclick="login()" class="loginBtn" id="loginBtn">Save</button>
-        <button type="button" onclick="login()" class="anonymousByn">Stay Anonymous</button>
-      </div>  
+      <label for="uname"><b>Full name</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" id="uname" required value="cloudman">
+
+      <label for="uemail"><b>Email</b></label>
+      <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required value="cloud@man">
+        
+      <button type="button" onclick="login(false)" class="loginBtn" id="loginBtn">Save</button>
+      <button type="button" onclick="login(true)" class="anonymousByn">Stay Anonymous</button>
+    </div>  
+  </form>
+</div>
+
+<!-- Page content -->
+<main hidden="hidden">
+    <h2 class="main-h1">Vegans</h2>
+
+    <!-- stats definition list-->
+    <div class="stats-div" >
+        <dl class="stats">
+            <dt class="terms">Msgs</dt>        
+            <dd id="statsMsg">0</dd>
+        </dl>
+        <dl class="stats">
+            <dt class="terms">Users</dt>
+            <dd id="statsUsers">0</dd>
+        </dl>
+    </div>    
+
+    <!-- messages list -->
+    <ol class="msglist"></ol>
+    
+    <!-- new message form -->
+    <form id="msgform" class="msg-form">        
+        <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
+        <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
+                <img src="./images/button.jpg" alt="submit button">
+        </button>
     </form>
-  </div>
-
-  <main hidden="hidden">
-      <h1 class="main-h1">Vegans</h1>
-      <ol class="msglist"> </ol>
-      <form id="msgform" class="msg-form">        
-          <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
-          <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
-                
-          </button>
-      </form>
-  </main> 
   
   <script src="../../node_modules/mocha/mocha.js"></script>
   <script src="../../node_modules/chai/chai.js"></script>
