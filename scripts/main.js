@@ -48,10 +48,16 @@ window.Babble = {
             if (request.status >= 200 && request.status < 400) { // Success!                
                 var data = JSON.parse(this.responseText);
                 console.log('counter: ',counter,' data: ',data);
+                console.log('request.status: ',request.status);
                 if (callback!= undefined)
                 {
-                    callback(counter,data); //todo
-                }  
+                    console.log(' getMessages callback defined! ');
+                    callback(data.append);
+                }
+                else{
+                    console.log(' getMessages callback undefined! ');
+
+                }
                 poll();  
             } else {
                 console.log('inside failure'); // We reached our target server, but it returned an error                
@@ -71,8 +77,9 @@ window.Babble = {
         var result;
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
+                var data = JSON.parse(this.responseText);
                 if (callback!= undefined){
-                    callback(id);
+                    callback(data,id);
                 }
                // updateStatsMsg();
                 //  callback(0);  //todo callback. update message on this client
@@ -261,15 +268,18 @@ function getGravatarByHash(hash){
     return (baseUrl + hash + '?d=wavatar').trim();
 }
 
-function removeListItemById(id){
-   console.log('inside remove li, id:',id);
-   var msgListElement = document.querySelector('.msglist');   
-   for (var i = 0 ; i < msgListElement.childNodes.length; i++) {
-       var intId = parseInt(msgListElement.childNodes[i].id);
-        if ( intId === id) {
-            msgListElement.removeChild(msgListElement.childNodes[i]);
+function removeListItemById(succes,id){
+    if (succes==true){
+        console.log('inside remove li, id:',id);
+        var msgListElement = document.querySelector('.msglist');   
+        for (var i = 0 ; i < msgListElement.childNodes.length; i++) {
+            var intId = parseInt(msgListElement.childNodes[i].id);
+                if ( intId === id) {
+                    msgListElement.removeChild(msgListElement.childNodes[i]);
+                    return;
+                }
         }
-   }
+    }
 }
 
 function createTimeFromUnix(timestamp){   
@@ -287,8 +297,8 @@ function login(isAnonymous){
     var email =(isAnonymous==true) ? '' : document.getElementById("uemail").value;
     Babble.register({name,email});
     Babble.getStats(updateStats);
-    Babble.login();
     poll();
+    Babble.login();
 }
 
 document.getElementById("msgform").addEventListener('submit', function(event) {
@@ -305,16 +315,15 @@ document.getElementById("msgform").addEventListener('submit', function(event) {
 function poll() {
         console.log('inside poll');
         var msgListElement = document.querySelector('.msglist');
-        var clientMsgsCount = msgListElement.children.length;
+        var clientMsgsCount = msgListElement.childNodes.length;
         Babble.getMessages(clientMsgsCount,updateClientMsgs);
 }
 
-function updateClientMsgs(counter,data){
+function updateClientMsgs(newMsgs){
     //todo check data not null
         var msgListElement = document.querySelector('.msglist');            
-        for (i = counter; i < data.count; i++) {
+        for (i = 0; i < newMsgs.length; i++) {
             var li = document.createElement('li');
-            var append = data.append[i-counter];
-            addMessageToClient(append);
+            addMessageToClient(newMsgs[i]);
         } 
 }
