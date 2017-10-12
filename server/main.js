@@ -27,7 +27,6 @@ http.createServer(function (req, res) {
         }
 
         else if(url_parts.pathname.substr(0, 9) == '/messages') { //new message        
-            console.log('inside /messages ');
             // message receiving
             var reqBody;
             req.on('data', function(data){        
@@ -45,47 +44,27 @@ http.createServer(function (req, res) {
                     count: counter,
                     append: [msg] }));
                 }
-                console.log('new msg statsResponses.length ',statsResponses.length);
-                console.log('new msg responseBody in login ',{users:usersCounter , messages:messages.getMsgCounter()});
-                
-                try {                    
-                    sendStatsResponses();
-                }
-                catch(e){
-                    console.log("error caught:",e);
-                }
-
+                 sendStatsResponses();
                 res.end(JSON.stringify({id:counter})); //return count of msgs
             });
         }
 
         else if(url_parts.pathname.substr(0, 6) == '/login') { 
-            //todo add user to users
-            console.log('## inside login ');
             req.on('data', function(data){
-                // reqBody = JSON.parse(data);
             });
             req.on('end', function(){
                 usersCounter++;
-                console.log('usersCounter after ++ ',usersCounter);
-                console.log('statsResponses.length ',statsResponses.length);
-                console.log('responseBody in login ',{users:usersCounter , messages:messages.getMsgCounter()});
                 sendStatsResponses();                
                 res.end();
             });
         }
 
         else if(url_parts.pathname.substr(0, 7) == '/logout') { 
-            //todo add user to users
-            console.log('## inside logout ');
+
             req.on('data', function(data){
-             //   reqBody = JSON.parse(data);
             });
             req.on('end', function(){ 
                 usersCounter--;
-                console.log('usersCounter after -- ',usersCounter);    
-                console.log('statsResponses.length  ',statsResponses.length);    
-                console.log('responseBody in logout ',{users:usersCounter , messages:messages.getMsgCounter()});
                 sendStatsResponses();
                 res.end();
             });
@@ -115,17 +94,14 @@ http.createServer(function (req, res) {
                 if (url_parts.path.substr(0, 18) == '/messages?counter='){
                     var captured = /counter=([^&]+)/.exec(url_parts.path)[1];               
                     var counter = captured ? captured : 0;
-                    console.log("captured: ",captured,"counter: ",counter);
                     if (isFinite(String(counter))==true){
                         var msgCounter = messages.getMsgCounter();
                         if(msgCounter > counter) {
-                            console.log('inside messages.serverMsgs.length > counter');                
                             res.end(JSON.stringify({
                                 count: msgCounter,
                                 append: messages.getMessages(counter)}));
                         }
                         else {
-                            console.log('client push ');
                             clients.push(res);
                         }
                     }
@@ -139,7 +115,6 @@ http.createServer(function (req, res) {
         }
         
         else if(url_parts.pathname.substr(0, 6) == '/stats') { //get statistics: num of messages and num of users                                            
-                    console.log('statsResponses push ');
                     statsResponses.push(res);
         }
         
@@ -167,7 +142,6 @@ http.createServer(function (req, res) {
         else if(url_parts.path.substr(0, 10) == '/messages/') {
                 var id = url_parts.path.substr(10, url_parts.path.length); 
                  if (isFinite(String(id))==true){
-                    console.log('id in delete: ',id);               
                     var countBeforeDelete = messages.getMsgCounter();
                     messages.deleteMessage(id);
                     var countAfterDelete = messages.getMsgCounter();
@@ -193,7 +167,6 @@ console.log('Server running on port: '+ 9000);
 
 function sendStatsResponses(){
         while(statsResponses.length > 0) {
-            console.log('new msg looop');
             var statsRes = statsResponses.pop();
             statsRes.end(JSON.stringify( {users:usersCounter , messages:messages.getMsgCounter()}));
         }

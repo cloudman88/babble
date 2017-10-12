@@ -10,59 +10,60 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
+    <!-- Login Modal -->
+    <div id="myModal" class="modal">           
+        <form class="modal-content animate" id="my-modal" action="/action_page.php">
+            <div class="container">
+            <h1>Who Are You ?</h1>
 
-<!-- Login Modal -->
-<div id="myModal" class="modal">           
+            <label for="uname"><b>Full name</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" id="uname" required value="cloudman">
 
-  <form class="modal-content animate" id="my-modal" action="/action_page.php">
-    <div class="container">
-      <h1>Who Are You ?</h1>
+            <label for="uemail"><b>Email</b></label>
+            <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required value="cloud@man">
+                
+            <button type="button" onclick="login(false)" class="loginBtn" id="loginBtn">Save</button>
+            <button type="button" onclick="login(true)" class="anonymousByn">Stay Anonymous</button>
+            </div>  
+        </form>
+    </div>
 
-      <label for="uname"><b>Full name</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" id="uname" required value="cloudman">
-
-      <label for="uemail"><b>Email</b></label>
-      <input type="email" placeholder="Enter Email" name="uemail" id="uemail" required value="cloud@man">
-        
-      <button type="button" onclick="login(false)" class="loginBtn" id="loginBtn">Save</button>
-      <button type="button" onclick="login(true)" class="anonymousByn">Stay Anonymous</button>
-    </div>  
-  </form>
+<div class="flex-container">
+    <!-- Page content -->
+    <header class="flex-container-head">
+        <img class="header-img" src="images/logo.jpg" alt="logo" />
+    </header>
+    <div class="flex-container-body">
+        <nav class="my-nav"></nav>
+        <main class = "my-main">
+            <div class="main-top">
+                <h2 class="main-header">Vegans</h2>
+                <!-- stats definition list-->
+                <div class="stats-div">
+                    <img class="stats" src="./images/messages-counter-icon.jpg" alt="messages counter icon">
+                    <dl class="stats">
+                        <dt class="terms">Msgs</dt>        
+                        <dd id="statsMsg">0</dd>
+                    </dl>
+                    <img class="stats" src="./images/users-counter-icon.jpg" alt="users counter icon">
+                    <dl class="stats">
+                        <dt class="terms">Users</dt>
+                        <dd id="statsUsers">0</dd>
+                    </dl>
+                </div>    
+            </div>
+            <!-- messages list -->
+            <ol class="msglist"></ol>
+            <!-- new message form -->
+            <form id="msgform" class="msg-form">   
+                    <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>                                   
+                    <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
+                            <img src="./images/button.jpg" alt="submit button">
+                    </button>                  
+            </form>
+        </main>
+    </div>
 </div>
-
-<!-- Page content -->
-<header>
-    <img src="images/logo.jpg" alt="logo" />
-</header>
-<main>
-    <h2 class="main-h1">Vegans</h2>
-
-    <!-- stats definition list-->
-    <div class="stats-div">
-        <img class="stats" src="./images/messages-counter-icon.jpg" alt="messages counter icon">
-        <dl class="stats">
-            <dt class="terms">Msgs</dt>        
-            <dd id="statsMsg">0</dd>
-        </dl>
-        <img class="stats" src="./images/users-counter-icon.jpg" alt="users counter icon">
-        <dl class="stats">
-            <dt class="terms">Users</dt>
-            <dd id="statsUsers">0</dd>
-        </dl>
-    </div>    
-
-    <!-- messages list -->
-    <ol class="msglist"></ol>
-    
-    <!-- new message form -->
-    <form id="msgform" class="msg-form">        
-        <textarea aria-label="msgbox" class="msgbox" id="msgBox" name="messages" form="msgform"></textarea>
-        <button type="submit" id="sbtMsgBtn" class="submitBtnImg" aria-label="submit">
-                <img src="./images/button.jpg" alt="submit button">
-        </button>
-    </form>
-</main>
-<nav></nav>
-    <script src="scripts/main.js"></script>
+<script src="scripts/main.js"></script>
 </body>
 </html>

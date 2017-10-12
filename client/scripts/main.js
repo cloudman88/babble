@@ -1,31 +1,20 @@
-console.log('inside client script');
-
 window.Babble = {
     //Babble.postMessage(message:Object, callback:Function)
     postMessage : function postMessage(message, callback){
-
-        try{
-            console.log('inside postMessage, the msg: ',message);
             var request = new XMLHttpRequest();
             request.open('POST','http://localhost:9000/messages',true);
             request.onload = function () {
                 if (request.status >= 200 && request.status < 400) {
-                    //todo callback     
                     if (callback!=undefined) callback();
-                  //  updateStatsMsg();
                 }
                 else{
-                    console.log('request.status postMessage',request.status);
+                    console.log('postMessage error, request status from server',request.status);
                 }
             }
             request.onerror = function() {
-                console.log('inside postMessage connection error'); // There was a connection error of some sort    
+                console.log('postMessage connection error'); // There was a connection error of some sort    
             }
             request.send(JSON.stringify(message));
-        }
-        catch(e){
-                console.log('postmessage e: ',e);
-        }
 
     },
 
@@ -47,31 +36,24 @@ window.Babble = {
         request.onload = function() {
             if (request.status >= 200 && request.status < 400) { // Success!                
                 var data = JSON.parse(this.responseText);
-                console.log('counter: ',counter,' data: ',data);
-                console.log('request.status: ',request.status);
                 if (callback!= undefined)
                 {
-                    console.log(' getMessages callback defined! ');
                     callback(data.append);
                 }
-                else{
-                    console.log(' getMessages callback undefined! ');
-
-                }
                 poll();  
-            } else {
-                console.log('inside failure'); // We reached our target server, but it returned an error                
+            }    
+            else{
+                    console.log('getMessages error, request status from server',request.status);
             }
         };
-            request.onerror = function() {
-            console.log('inside connection error'); // There was a connection error of some sort    
+        request.onerror = function() {
+            console.log('getMessages connection error'); // There was a connection error of some sort    
         };
         request.send();
     },
 
     //Babble.deleteMessage(id:String, callback:Function)
     deleteMessage : function deleteMessage(id,callback){
-        console.log('inside deleteMessage, id:' , id);
         var request = new XMLHttpRequest();       
         request.open('DELETE','http://localhost:9000/messages/'+id,true);
         var result;
@@ -81,30 +63,31 @@ window.Babble = {
                 if (callback!= undefined){
                     callback(data,id);
                 }
-               // updateStatsMsg();
-                //  callback(0);  //todo callback. update message on this client
             }
+             else{
+                    console.log('deleteMessage error, request status from server',request.status);
+                }
         }
+        request.onerror = function() {
+            console.log('deleteMessage connection error'); // There was a connection error of some sort    
+        };
         request.send();
     },
 
     //Babble.getStats(callback:Function)
     getStats : function(callback){
-        console.log('getStats');
         var request = new XMLHttpRequest();
         request.open('GET','http://localhost:9000/stats',true);
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
                 var resBody = JSON.parse(this.responseText);
-                console.log('getStats resBody: ',resBody);
                 if (callback!= undefined)  {
-                    console.log('getStats callback is defined');
                     callback(resBody);}
                     Babble.getStats(updateStats);
                 }
-				else {
-                console.log('getStats failure'); // We reached our target server, but it returned an error                
-            }
+				else{
+                    console.log('getStats error, request status from server',request.status);
+                }
         }
 		request.onerror = function() {
             console.log('getStats connection error'); // There was a connection error of some sort    
@@ -113,7 +96,6 @@ window.Babble = {
     },
 
     logout : function(callback){
-        console.log('babble logout');
         var request = new XMLHttpRequest();
         var ls = JSON.parse(localStorage.getItem('babble'));
         request.open('POST','http://localhost:9000/logout',true);
@@ -121,28 +103,31 @@ window.Babble = {
             if (request.status >= 200 && request.status < 400) {
                 console.log('succes logout ');
             }
+            else{
+                console.log('logout error, request status from server',request.status);
+            }            
         }
+        request.onerror = function() {
+            console.log('logout connection error'); // There was a connection error of some sort    
+        };
         request.send(JSON.stringify({email :ls.userInfo.email }));
     },
 
     login : function(callback){
-        try{
-            console.log('babble login');
-            var request = new XMLHttpRequest();
-            request.open('POST','http://localhost:9000/login',true);
-            request.onload = function () {
-                if (request.status >= 200 && request.status < 400) {
-                    console.log('succes login ');
-                }
-                else {
-                    console.log('request.status login ',request.status);
-                }
+        var request = new XMLHttpRequest();
+        request.open('POST','http://localhost:9000/login',true);
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 400) {
+                console.log('succes login ');
             }
-            request.send();
+            else{
+            console.log('login error, request status from server',request.status);
+            }
         }
-        catch(e){   
-            console.log('e: ',e);
-        }
+        request.onerror = function() {
+            console.log('login connection error'); // There was a connection error of some sort    
+        };
+        request.send();
     }
 };
 
@@ -157,13 +142,11 @@ window.addEventListener('load',function(){
 },false);
 
 window.onbeforeunload = function(){
-   console.log('logging out..');
    Babble.logout();
    return null;
 }
 
 function updateStats(stats){
-    console.log('inside update stats');
     updateStatsMsg(stats.messages);
     updateStatsUsers(stats.users);
 }
@@ -183,7 +166,6 @@ function updateStatsUsers(usersCount){
     var statsUsersElement = document.getElementById("statsUsers");
     var clientUsersCount =parseInt(statsUsersElement.innerHTML);
     statsUsersElement.innerText = usersCount;
-    console.log('clientUsersCount: ',clientUsersCount,'usersCount :',usersCount);
 }
 
 function addMessageToClient(mesgDetails){
@@ -259,7 +241,6 @@ function createDeleteButton(divId){
         deleteBtnImg.src = "./images/delete.jpg";        
 
         deleteBtn.appendChild(deleteBtnImg);
-
         return deleteBtn;
 }
 
@@ -270,7 +251,6 @@ function getGravatarByHash(hash){
 
 function removeListItemById(succes,id){
     if (succes==true){
-        console.log('inside remove li, id:',id);
         var msgListElement = document.querySelector('.msglist');   
         for (var i = 0 ; i < msgListElement.childNodes.length; i++) {
             var intId = parseInt(msgListElement.childNodes[i].id);
@@ -313,7 +293,6 @@ document.getElementById("msgform").addEventListener('submit', function(event) {
 },false);
 
 function poll() {
-        console.log('inside poll');
         var msgListElement = document.querySelector('.msglist');
         var clientMsgsCount = msgListElement.childNodes.length;
         Babble.getMessages(clientMsgsCount,updateClientMsgs);
