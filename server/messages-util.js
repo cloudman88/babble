@@ -3,7 +3,6 @@ var serverMsgs = [];
 module.exports = {
     //messages.addMessage(message:Object) : Number(id)
     addMessage : function (message){
-        console.log('inside addMessage. serverMsgs ',serverMsgs);
         serverMsgs.push(message);
         var msgCount = serverMsgs.length; 
         return msgCount;
@@ -25,7 +24,6 @@ module.exports = {
         var stop = false;
         var i = 0;
         while (stop!=true && i< serverMsgs.length){
-            console.log(i,': ',serverMsgs[i]);
             var intId = parseInt(id);
             if (serverMsgs[i].timestamp === intId) {
                 serverMsgs.splice(i, 1);
